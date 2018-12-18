@@ -4,8 +4,30 @@
     "log_level": "INFO",
     "node_name": "c1",
     "server": true,
-    "bind_addr": "192.168.0.137",
-    "bootstrap-expect": 2,
+    "bind_addr": "{{ GetPrivateIP }}",
+    "bootstrap_expect": 2,
     "ui": true,
-    "client_addr": "0.0.0.0"
+    "client_addr": "0.0.0.0",
+    "addresses": {
+        "dns": "{{ GetPrivateIP }}",
+        "http": "{{ GetPrivateIP }}",
+        "https": "{{ GetPrivateIP }}",
+        "grpc": "{{ GetPrivateIP }}"
+    },
+    "ports": {
+        "dns": 8600,
+        "http": 8500,
+        "https": 8501,
+        "grpc": 8502,
+        "serf_lan": 8301,
+        "serf_wan": 8302,
+        "server": 8300,
+        "sidecar_min_port": 21000,
+        "sidecar_max_port": 21255
+    },
+    "acl": {
+        "enabled": true
+    },
+    "advertise_addr": "{{ GetPrivateIP }}",
+    "advertise_addr_wan": "{{ GetPrivateIP }}"
 }
