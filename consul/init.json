@@ -13,6 +13,8 @@
     "enable_debug": false,
     "enable_syslog": true,
     "encrypt": "6jLwGWeMvJjLKnDAO8h2LQ==",
+    "encrypt_verify_incoming": true,
+    "encrypt_verify_outgoing": true,
     "retry_join": [
         "192.168.0.137",
         "192.168.0.185",
@@ -36,7 +38,8 @@
         "sidecar_max_port": 21255
     },
     "acl": {
-        "enabled": true
+        "enabled": true,
+        "policy_ttl": "30s"
     },
     "advertise_addr": "{{ GetPrivateIP }}",
     "serf_wan": "{{ GetPrivateIP }}",
@@ -62,5 +65,15 @@
         "recursor_timeout": "2s",
         "disable_compression": false,
         "enable_additional_node_meta_txt": true
+    },
+    "disable_keyring_file": false,
+    "http_config": {
+        "block_endpoints":[
+            "/v1/acl",
+            "/v2/acl"
+        ],
+        "response_headers": {
+            "Access-Control-Allow-Origin": "*"
+          }
     }
 }
