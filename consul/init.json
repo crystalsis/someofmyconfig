@@ -37,14 +37,26 @@
         "sidecar_min_port": 21000,
         "sidecar_max_port": 21255
     },
-    "acl": {
-        "enabled": true,
-        "policy_ttl": "30s"
-    },
     "advertise_addr": "{{ GetPrivateIP }}",
     "serf_wan": "{{ GetPrivateIP }}",
     "serf_lan": "{{ GetPrivateIP }}",
     "advertise_addr_wan": "{{ GetPrivateIP }}",
+    "primary_datacenter": "dc1",
+    "acl": {
+        "enabled": true,
+        "policy_ttl": "30s",
+        "token_ttl": "30s",
+        "down_policy": "extend-cache",
+        "default_policy": "allow",
+        "enable_token_replication": false,
+        "tokens": {
+            "master": "c7a6470a-0401-11e9-8324-00155d009617",
+            "default": "54ee3146-0401-11e9-8324-00155d009617",
+            "agent": "55d2944e-0401-11e9-8324-00155d009617",
+            "agent_master": "c85b9178-0401-11e9-8324-00155d009617",
+            "replication": "b4489ae6-0401-11e9-8324-00155d009617"
+        }
+    },
     "autopilot": {
         "cleanup_dead_servers": true,
         "last_contact_threshold": "200ms",
