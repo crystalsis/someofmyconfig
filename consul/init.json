@@ -1,5 +1,5 @@
 {
-    "datacenter": "dc1.guagua.party",
+    "datacenter": "dc1",
     "data_dir": "/opt/consul",
     "log_level": "INFO",
     "node_name": "c1",
@@ -12,6 +12,7 @@
     "enable_local_script_checks": true,
     "enable_debug": false,
     "enable_syslog": true,
+    "disable_keyring_file": true,
     "encrypt": "6jLwGWeMvJjLKnDAO8h2LQ==",
     "encrypt_verify_incoming": true,
     "encrypt_verify_outgoing": true,
@@ -37,10 +38,10 @@
         "sidecar_min_port": 21000,
         "sidecar_max_port": 21255
     },
+    "advertise_addr_wan": "{{ GetPrivateIP }}",
     "advertise_addr": "{{ GetPrivateIP }}",
     "serf_wan": "{{ GetPrivateIP }}",
     "serf_lan": "{{ GetPrivateIP }}",
-    "advertise_addr_wan": "{{ GetPrivateIP }}",
     "primary_datacenter": "dc1",
     "acl": {
         "enabled": true,
@@ -64,6 +65,9 @@
         "server_stabilization_time": "10s"
     },
     "check_update_interval": "10m",
+    "connect": {
+        "enabled": true
+    },
     "domain": "consul",
     "dns_config": {
         "allow_stale": true,
@@ -78,7 +82,6 @@
         "disable_compression": false,
         "enable_additional_node_meta_txt": true
     },
-    "disable_keyring_file": false,
     "http_config": {
         "block_endpoints":[
             "/v1/acl",
@@ -87,5 +90,9 @@
         "response_headers": {
             "Access-Control-Allow-Origin": "*"
           }
-    }
+    },
+    "key_file": "",
+    "cert_file": "",
+    "ca_file": "",
+    "ca_path": ""
 }
