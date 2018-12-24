@@ -2,8 +2,15 @@ storage "file" {
   path = "/etc/vault.d/data"
 }
 
-ha_storage "file" {
-  path = "/etc/vault.d/data"
+storage "consul" {
+  address = "127.0.0.1:8500"
+  path = "vault"
+  check_timeout = "5s"
+}
+
+ha_storage "consul" {
+  address = "127.0.0.1:8500"
+  path = "vault"
 }
 
 listener "tcp" {

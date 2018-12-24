@@ -43,3 +43,10 @@ wget https://github.com/fabiolb/fabio/releases/download/v1.5.10/fabio-1.5.10-go1
 chmod +x fabio-1.5.10-go1.11.1-linux_amd64
 mv fabio-1.5.10-go1.11.1-linux_amd64 /usr/bin/fabio
 rm -f fabio-1.5.10-go1.11.1-linux_amd64
+#etcd
+wget https://github.com/etcd-io/etcd/releases/download/v3.3.10/etcd-v3.3.10-linux-amd64.tar.gz
+tar xvpf etcd-v3.3.10-linux-amd64.tar.gz
+cp etcd-v3.3.10-linux-amd64/etcd /usr/bin/etcd
+cp etcd-v3.3.10-linux-amd64/etcdctl /usr/bin/etcdctl
+rm -fr etcd-v3.3.10-linux-amd64/
+rm -f etcd-v3.3.10-linux-amd64.tar.gz
