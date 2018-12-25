@@ -1,9 +1,14 @@
 {
     "datacenter": "dc1",
     "data_dir": "/opt/consul",
-    "log_level": "INFO",
+    "log_level": "trace",
+    "node_id": "adf4238a-882b-9ddc-4a9d-5b6758e4159e",
     "node_name": "c1",
+    "node_meta": {
+        "instance_type": "t2.medium"
+    },
     "server": true,
+    "server_name": "c1",
     "bind_addr": "{{ GetPrivateIP }}",
     "bootstrap_expect": 2,
     "ui": true,
@@ -22,14 +27,23 @@
     "enable_syslog": true,
     "enable_acl_replication": false,
     "enable_agent_tls_for_checks": false,
+    "syslog_facility": "LOCAL0",
     "encrypt": "6jLwGWeMvJjLKnDAO8h2LQ==",
     "encrypt_verify_incoming": true,
     "encrypt_verify_outgoing": true,
+    "rejoin_after_leave": true,
     "retry_join": [
         "192.168.0.137",
         "192.168.0.185",
-        "192.168.0.131"
+        "192.168.0.126"
     ],
+    "retry_interval": "30s",
+    "retry_join_wan": [
+        "192.168.0.137",
+        "192.168.0.185",
+        "192.168.0.126"
+    ],
+    "retry_interval_wan": "30s",
     "addresses": {
         "dns": "{{ GetPrivateIP }}",
         "http": "{{ GetPrivateIP }}",
@@ -51,6 +65,9 @@
     "advertise_addr": "{{ GetPrivateIP }}",
     "serf_wan": "{{ GetPrivateIP }}",
     "serf_lan": "{{ GetPrivateIP }}",
+    "reconnect_timeout": "24h",
+    "reconnect_timeout_wan": "24h",
+    "session_ttl_min": "10s",
     "primary_datacenter": "dc1",
     "acl": {
         "enabled": true,
@@ -78,7 +95,11 @@
         "enabled": true,
         "ca_provider": "vault",
         "ca_config": {
-            
+            "leaf_cert_ttl": "72h",
+            "address": "127.0.0.1:8200",
+            "token": "",
+            "root_pki_path": "consul",
+            "intermediate_pki_path": ""
         }
     },
     "domain": "consul",
@@ -96,13 +117,27 @@
         "enable_additional_node_meta_txt": true
     },
     "http_config": {
-        "block_endpoints":[
+        "block_endpoints": [
             "/v1/acl",
             "/v2/acl"
         ],
         "response_headers": {
             "Access-Control-Allow-Origin": "*"
-          }
+        }
+    },
+    "leave_on_terminate": false,
+    "skip_leave_on_interrupt": true,
+    "limits": {
+        "rpc_rate": 1000000,
+        "rpc_max_burst": 1000
+    },
+    "performance": {
+        "leave_drain_time": "5s",
+        "raft_multiplier": 0,
+        "rpc_hold_timeout": "7s"
+    },
+    "telemetry": {
+        "metrics_prefix": "c1"
     },
     "key_file": "",
     "cert_file": "",

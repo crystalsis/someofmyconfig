@@ -9,7 +9,7 @@ ha_storage "mysql" {
   database = "vault"
   table = "vault"
   max_parallel = "128"
-  ha_enabled = true
+  ha_enabled = "true"
   lock_table = "vault_lock"
   tls_ca_file = ""
 }
@@ -32,7 +32,7 @@ plugin_directory = "/etc/vault.d/plugins"
 telemetry {
   disable_hostname = true
 }
-log_level = "INFO"
+log_level = "info"
 default_lease_ttl = "768h"
 max_lease_ttl = "768h"
 default_max_request_duration = "90s"
