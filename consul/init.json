@@ -99,7 +99,7 @@
             "address": "127.0.0.1:8200",
             "token": "",
             "root_pki_path": "consul",
-            "intermediate_pki_path": ""
+            "intermediate_pki_path": "consul_t"
         }
     },
     "domain": "consul",
