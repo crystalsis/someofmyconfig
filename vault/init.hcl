@@ -2,15 +2,16 @@ storage "file" {
   path = "/etc/vault.d/data"
 }
 
-storage "consul" {
-  address = "127.0.0.1:8500"
-  path = "vault"
-  check_timeout = "5s"
-}
-
-ha_storage "consul" {
-  address = "127.0.0.1:8500"
-  path = "vault"
+ha_storage "mysql" {
+  address = "127.0.0.1:3306"
+  username = "vault"
+  password = ""
+  database = "vault"
+  table = "vault"
+  max_parallel = "128"
+  ha_enabled = true
+  lock_table = "vault_lock"
+  tls_ca_file = ""
 }
 
 listener "tcp" {

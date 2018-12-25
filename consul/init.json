@@ -75,7 +75,11 @@
     },
     "check_update_interval": "10m",
     "connect": {
-        "enabled": true
+        "enabled": true,
+        "ca_provider": "vault",
+        "ca_config": {
+            
+        }
     },
     "domain": "consul",
     "dns_config": {
