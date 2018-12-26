@@ -11,6 +11,9 @@ apt-get update
 apt-get install docker-ce
 curl -L "https://github.com/docker/compose/releases/download/1.23.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
+wget https://github.com/rkt/rkt/releases/download/v1.30.0/rkt_1.30.0-1_amd64.deb
+dpkg -i rkt_1.30.0-1_amd64.deb
+rm -f rkt_1.30.0-1_amd64.deb
 mkdir ./demoCA
 mkdir ./demoCA/certs
 mkdir ./demoCA/newcerts
