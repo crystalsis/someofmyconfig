@@ -7,8 +7,12 @@ usermod -a -G adm jakaz
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
 apt-key fingerprint 0EBFCD88
 add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | apt-key add -
+cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main
+EOF
 apt-get update
-apt-get install docker-ce
+apt-get install -y docker-ce kubelet kubeadm kubectl
 curl -L "https://github.com/docker/compose/releases/download/1.23.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 wget https://github.com/rkt/rkt/releases/download/v1.30.0/rkt_1.30.0-1_amd64.deb
@@ -23,7 +27,7 @@ touch ./demoCA/index.txt
 echo 01 > ./demoCA/serial
 openssl genrsa -out ca.key 2048
 openssl req -new -key ca.key -out ca.csr
-#openssl x509 -req -days 36500 -in ca.csr -signkey ca.key -out ca.crt
+openssl x509 -req -days 36500 -in ca.csr -signkey ca.key -out ca.crt
 openssl req -new -x509 -days 36500 -key ca.key -out ca.crt subj "/C=CN/ST=Shandong/L=Qingdao/O=guagua/OU=party/CN=consul.guagua.party"
 openssl genrsa  -out server.key 2048
 openssl req -new -key server.key -out server.csr
