@@ -1,7 +1,7 @@
 #bash -c "$(wget https://raw.githubusercontent.com/crystalsis/someofmyconfig/master/debian/init.sh -O -)"
 #su - root
 apt-get update
-apt-get install -y apt-transport-https gnupg2 software-properties-common sudo vim zsh fish git curl wget jq busybox htop iotop iftop unzip liblxc1 strace socat dnsutils net-tools fonts-powerline lrzsz cmatrix cmatrix-xfont boxes libaa-bin sl toilet figlet bb fortune-mod fortune-zh cowsay lolcat screenfetch linuxlogo neofetch aview imagemagick pv espeak rig bastet ninvaders pacman4console nsnake greed bsdgames bsdgames moon-buggy pi ri fonts-noto fonts-ipafont-mincho fonts-ipafont-gothic fonts-arphic-ukai fonts-arphic-uming fonts-nanum fonts-mona fonts-vlgothic fonts-takao-gothic fonts-ipafont-gothic fonts-ipaexfont-gothic fonts-takao-mincho fonts-ipafont-mincho fonts-ipaexfont-mincho
+apt-get install -y apt-transport-https gnupg2 software-properties-common sudo vim zsh fish git curl wget jq busybox ipvsadm keepalived htop iotop iftop zip unzip liblxc1 strace socat dnsutils net-tools fonts-powerline lrzsz cmatrix cmatrix-xfont boxes libaa-bin sl toilet figlet bb fortune-mod fortune-zh cowsay lolcat screenfetch linuxlogo neofetch aview imagemagick pv espeak rig bastet ninvaders pacman4console nsnake greed bsdgames bsdgames moon-buggy pi ri fonts-noto fonts-ipafont-mincho fonts-ipafont-gothic fonts-arphic-ukai fonts-arphic-uming fonts-nanum fonts-mona fonts-vlgothic fonts-takao-gothic fonts-ipafont-gothic fonts-ipaexfont-gothic fonts-takao-mincho fonts-ipafont-mincho fonts-ipaexfont-mincho
 usermod -a -G sudo jakaz
 usermod -a -G adm jakaz
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
