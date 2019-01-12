@@ -1,12 +1,14 @@
 #sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-#zsh -c "$(wget https://raw.githubusercontent.com/crystalsis/someofmyconfig/master/debian/init.sh -O -)"
+#zsh -c "$(wget https://raw.githubusercontent.com/crystalsis/someofmyconfig/master/debian/init.zsh -O -)"
 #antigen
+mkdir ~/.local/share/ -p
 curl -fsSL git.io/antigen > ~/.local/share/antigen.zsh
 cat <<EOF >>~/.zshrc
-source /path-to-antigen/antigen.zsh
+source ~/.local/share/antigen.zsh
 
 # Load the oh-my-zsh's library.
 antigen use oh-my-zsh
+antigen theme https://github.com/caiogondim/bullet-train-oh-my-zsh-theme bullet-train
 
 # Bundles from the default repo (robbyrussell's oh-my-zsh).
 antigen bundle git
@@ -145,6 +147,7 @@ for template_file in ${ZDOTDIR:-${HOME}}/.zim/templates/*; do
   cat ${template_file} ${user_file}(.N) > ${user_file}.tmp && mv ${user_file}{.tmp,}
 done
 source ${ZDOTDIR:-${HOME}}/.zlogin
+#zpm
 cat <<EOF >>~/.zshrc
 if [[ -f ~/.zpm/zpm.zsh ]]; then
 	source ~/.zpm/zpm.zsh
@@ -153,4 +156,5 @@ else
 	source ~/.zpm/zpm.zsh
 fi
 EOF
+#antibody
 curl -sL git.io/antibody | sh -s
