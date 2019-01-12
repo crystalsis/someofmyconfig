@@ -3,7 +3,6 @@
 apt-get update
 apt-get install netselect-apt
 netselect-apt -s -n -c China -d -t 20 stretch
-curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -
 cat <<EOF >/etc/apt/sources.list
 deb https://mirrors.aliyun.com/debian/ stretch main non-free contrib
 deb-src https://mirrors.aliyun.com/debian/ stretch main non-free contrib
@@ -13,24 +12,30 @@ deb https://mirrors.aliyun.com/debian/ stretch-updates main non-free contrib
 deb-src https://mirrors.aliyun.com/debian/ stretch-updates main non-free contrib
 deb https://mirrors.aliyun.com/debian/ stretch-backports main non-free contrib
 deb-src https://mirrors.aliyun.com/debian/ stretch-backports main non-free contrib
-deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/debian/ stretch stable
-deb-src [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/debian/ stretch stable
 EOF
+apt-get update
 apt-get install -y apt-transport-https gnupg2 software-properties-common sudo vim-nox vim-pathogen vim-asciidoc vim-haproxy vim-youcompleteme vim-command-t zsh fish git curl wget jq busybox ipvsadm keepalived htop iotop iftop zip unzip liblxc1 strace socat dnsutils net-tools fonts-powerline lrzsz cmatrix cmatrix-xfont boxes libaa-bin sl toilet figlet bb fortune-mod fortune-zh cowsay lolcat screenfetch linuxlogo neofetch aview imagemagick pv espeak rig bastet ninvaders pacman4console nsnake greed bsdgames bsdgames moon-buggy pi ri fonts-noto fonts-ipafont-mincho fonts-ipafont-gothic fonts-arphic-ukai fonts-arphic-uming fonts-nanum fonts-mona fonts-vlgothic fonts-takao-gothic fonts-ipafont-gothic fonts-ipaexfont-gothic fonts-takao-mincho fonts-ipafont-mincho fonts-ipaexfont-mincho
+mkdir ~/.local/share/fonts/ -p
+curl -fsSL https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf -o ~/.local/share/fonts/PowerlineSymbols.otf
+fc-cache -vf ~/.local/share/fonts/
+mkdir ~/.config/fontconfig/conf.d/ -p
+curl -fsSL https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf -o ~/.config/fontconfig/conf.d/10-powerline-symbols.conf
 usermod -a -G sudo jakaz
 usermod -a -G adm jakaz
 #docker
 apt-get remove docker docker-engine docker.io containerd runc
+curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/debian/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/debian $(lsb_release -cs) stable"
 apt-key fingerprint 0EBFCD88
 apt-get update
 apt-get install -y docker-ce
 #docker-conpose
-curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+curl -fsSL "https://mirrors.aliyun.com/docker-toolbox/linux/compose/1.21.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 #k8s
-curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | apt-key add - 
+curl -fsSL https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | apt-key add - 
 cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
-deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-stretch main
+deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main
 EOF
 apt-get update
 apt-get install -y kubelet kubeadm kubectl
@@ -57,9 +62,6 @@ mkdir /etc/consul.d
 mkdir /etc/vault.d
 mkdir /etc/vault.d/data
 mkdir /etc/vault.d/plugins
-#sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-#curl -L https://get.oh-my.fish | fish
-#omf install lambda fonts mvn rvm
 #consul
 wget https://releases.hashicorp.com/consul/1.4.0/consul_1.4.0_linux_amd64.zip
 unzip consul_1.4.0_linux_amd64.zip
