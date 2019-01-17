@@ -1,4 +1,3 @@
-#sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 #zsh -c "$(wget https://raw.githubusercontent.com/crystalsis/someofmyconfig/master/debian/init.zsh -O -)"
 #antigen
 mkdir ~/.local/share/ -p
@@ -146,7 +145,6 @@ for template_file in ${ZDOTDIR:-${HOME}}/.zim/templates/*; do
   user_file="${ZDOTDIR:-${HOME}}/.${template_file:t}"
   cat ${template_file} ${user_file}(.N) > ${user_file}.tmp && mv ${user_file}{.tmp,}
 done
-source ${ZDOTDIR:-${HOME}}/.zlogin
 #zpm
 cat <<EOF >>~/.zshrc
 if [[ -f ~/.zpm/zpm.zsh ]]; then
@@ -158,3 +156,5 @@ fi
 EOF
 #antibody
 curl -sL git.io/antibody | sh -s
+#oh-my-fish
+curl -L https://get.oh-my.fish | fish
