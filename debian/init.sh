@@ -14,12 +14,16 @@ deb https://mirrors.aliyun.com/debian/ stretch-backports main non-free contrib
 deb-src https://mirrors.aliyun.com/debian/ stretch-backports main non-free contrib
 EOF
 apt-get update
-apt-get install -y apt-transport-https gnupg2 software-properties-common sudo vim-nox vim-pathogen vim-asciidoc vim-haproxy vim-youcompleteme vim-command-t zsh fish git curl wget jq busybox ipvsadm keepalived htop iotop iftop zip unzip liblxc1 strace socat dnsutils net-tools fonts-powerline lrzsz cmatrix cmatrix-xfont boxes libaa-bin sl toilet figlet bb fortune-mod fortune-zh cowsay lolcat screenfetch linuxlogo neofetch aview imagemagick pv espeak rig bastet ninvaders pacman4console nsnake greed bsdgames bsdgames moon-buggy pi ri fonts-noto fonts-ipafont-mincho fonts-ipafont-gothic fonts-arphic-ukai fonts-arphic-uming fonts-nanum fonts-mona fonts-vlgothic fonts-takao-gothic fonts-ipafont-gothic fonts-ipaexfont-gothic fonts-takao-mincho fonts-ipafont-mincho fonts-ipaexfont-mincho
-mkdir ~/.local/share/fonts/ -p
-curl -fsSL https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf -o ~/.local/share/fonts/PowerlineSymbols.otf
-fc-cache -vf ~/.local/share/fonts/
-mkdir ~/.config/fontconfig/conf.d/ -p
-curl -fsSL https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf -o ~/.config/fontconfig/conf.d/10-powerline-symbols.conf
+apt-get install -y apt-transport-https gnupg2 software-properties-common sudo vim-nox vim-pathogen vim-asciidoc vim-haproxy vim-youcompleteme vim-command-t zsh fish git curl wget jq busybox ipvsadm keepalived htop iotop iftop zip unzip liblxc1
+apt-get install -y strace socat dnsutils net-tools lrzsz cmatrix boxes libaa-bin sl toilet figlet bb fortune-mod fortune-zh cowsay lolcat screenfetch linuxlogo neofetch aview imagemagick pv espeak rig bastet ninvaders pacman4console nsnake greed bsdgames bsdgames moon-buggy pi ri
+apt-get install -y fonts-powerline fonts-noto fonts-ipafont-mincho fonts-ipafont-gothic fonts-arphic-ukai fonts-arphic-uming fonts-nanum fonts-mona fonts-vlgothic fonts-takao-gothic fonts-ipafont-gothic fonts-ipaexfont-gothic fonts-takao-mincho fonts-ipafont-mincho fonts-ipaexfont-mincho
+apt-get install -y ttf-mscorefonts-installer ttf-denemo ttf-unifont ttf-wqy-zenhei ttf-wqy-microhei ttf-essays1743 ttf-atarismall ttf-dejavu ttf-tagbanwa ttf-summersby ttf-staypuft ttf-marvosym ttf-engadget ttf-bitstream-vera ttf-ancient-fonts-symbola ttf-ancient-fonts ttf-aenigma ttf-sjfonts ttf-lyx ttf-freefont ttf-georgewilliams
+apt-get install -y fonts-arphic-bkai00mp fonts-arphic-bsmi00lp fonts-arphic-gbsn00lp fonts-arphic-gkai00mp
+#mkdir ~/.local/share/fonts/ -p
+#curl -fsSL https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf -o ~/.local/share/fonts/PowerlineSymbols.otf
+#fc-cache -vf ~/.local/share/fonts/
+#mkdir ~/.config/fontconfig/conf.d/ -p
+#curl -fsSL https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf -o ~/.config/fontconfig/conf.d/10-powerline-symbols.conf
 usermod -a -G sudo jakaz
 usermod -a -G adm jakaz
 #docker
