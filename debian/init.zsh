@@ -74,7 +74,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="false"
 HIST_STAMPS="yyyy-mm-dd"
 
 #omz
-source $ZSH/oh-my-zsh.sh
+source "$ZSH/oh-my-zsh.sh"
 #antigen
 source ~/.local/share/antigen.zsh
 #zplug
@@ -92,6 +92,7 @@ plugins=(
   rbenv
   ruby
   rails
+  themes
 )
 
 # Load the oh-my-zsh's library.
