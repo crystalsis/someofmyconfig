@@ -1,0 +1,200 @@
+version: '3.6'
+
+services:
+
+  nginx:
+    image: nginx
+    volumes:
+     - /opt/nginx/conf:/etc/nginx/conf.d/
+     - /opt/nginx/html:/usr/share/nginx/html
+    ports:
+     - 80:80
+
+  wordpress:
+    image: wordpress:fpm
+    restart: always
+    networks:
+      - web
+    depends_on:
+      - mariadb
+    secrets:
+      - pwd-admin
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_USER: admin
+      WORDPRESS_DB_PASSWORD_FILE: /run/secrets/pwd-admin
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_TABLE_PREFIX: wp_
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  drupal:
+    image: drupal:fpm
+    restart: always
+    networks:
+      - web
+    depends_on:
+      - mariadb
+    volumes:
+      - /opt/drupal/modules:/var/www/html/modules
+      - /opt/drupal/profiles:/var/www/html/profiles
+      - /opt/drupal/sites:/var/www/html/sites
+      - /opt/drupal/themes:/var/www/html/themes
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  joomla:
+    image: joomla:fpm
+    restart: always
+    networks:
+      - web
+    depends_on:
+      - mariadb
+    secrets:
+      - pwd-admin
+    environment:
+      JOOMLA_DB_HOST: mariadb
+      JOOMLA_DB_USER: admin
+      JOOMLA_DB_PASSWORD: pwd123456
+      JOOMLA_DB_NAME: joomla
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  mediawiki:
+    image: mediawiki
+    restart: always
+    networks:
+      - web
+    depends_on:
+      - mariadb
+    ports:
+      - 10080:80
+    volumes:
+      - /opt/mediawiki/images:/var/www/html/images
+      - /opt/mediawiki/LocalSettings.php:/var/www/html/LocalSettings.php
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  adminer:
+    image: adminer:fastcgi
+    restart: always
+    networks:
+      - web
+    environment:
+      ADMINER_PLUGINS: plugin designs tables-filter tinymce edit-calendar edit-foreign edit-textarea enum-option enum-types
+      ADMINER_DESIGN: haeckel
+      ADMINER_DEFAULT_SERVER: mariadb
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  mysql:
+    image: mysql
+    restart: always
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    networks:
+      - web
+    secrets:
+      - pwd-admin
+      - pwd-root
+    volumes:
+      - /opt/mysql/conf:/etc/mysql/conf.d
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/pwd-root
+      MYSQL_USER: admin
+      MYSQL_PASSWORD_FILE: /run/secrets/pwd-admin
+    deploy:
+      mode: replicated
+      replicas: 1
+      
+  mariadb:
+    image: mariadb
+    restart: always
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    networks:
+      - web
+    secrets:
+      - pwd-admin
+      - pwd-root
+    volumes:
+      - /opt/mariadb/conf:/etc/mysql/conf.d
+      - mariadb-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/pwd-root
+      MYSQL_USER: admin
+      MYSQL_PASSWORD_FILE: /run/secrets/pwd-admin
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  postgres:
+    image: postgres
+    restart: always
+    command: -c 'config_file=/etc/postgresql/postgresql.conf'
+    networks:
+      - web
+    secrets:
+      - pwd-root
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - /opt/postgres/conf/postgres.conf:/etc/postgresql/postgresql.conf
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/pwd-root
+      PGDATA: /var/lib/postgresql/data
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  redis:
+    image: redis
+    restart: always
+    command: redis-server /usr/local/etc/redis/redis.conf --appendonly yes
+    networks:
+      - web
+    volumes:
+      - redis-data:/data
+      - /opt/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
+    deploy:
+      mode: replicated
+      replicas: 1
+  
+  mongodb:
+    image: mongo
+    restart: always
+    command: --config /etc/mongo/mongod.conf
+    secrets:
+      - pwd-root
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/pwd-root
+    networks:
+      - web
+    volumes:
+      - /opt/mongodb/conf:/etc/mongo
+      - mongo-data:/data/db 
+    deploy:
+      mode: replicated
+      replicas: 1
+
+networks:
+  web:
+    driver: overlay
+    attachable: true
+
+volumes:
+  mysql-data:
+  mariadb-data:
+  postgres-data:
+  redis-data:
+  mongo-data:
+
+secrets:
+  pwd-root:
+    external: true
+  pwd-admin:
+    external: true
