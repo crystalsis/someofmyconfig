@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 #zsh -c "$(wget https://raw.githubusercontent.com/crystalsis/someofmyconfig/master/debian/init.zsh -O -)"
 #antigen
 mkdir ~/.local/share/ -p

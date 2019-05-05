@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #ca
 mkdir ./demoCA
 mkdir ./demoCA/certs

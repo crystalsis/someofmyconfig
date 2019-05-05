@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #bash -c "$(wget https://raw.githubusercontent.com/crystalsis/someofmyconfig/master/debian/init.sh -O -)"
 #su - root
 apt-get update
