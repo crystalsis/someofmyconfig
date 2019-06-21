@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:
+      - "53:1053/tcp"
+      - "53:1053/udp"
+      - "67:1067/udp"
+      - "80:1080/tcp"
+      - "443:1443/tcp"
+    environment:
+      TZ: 'Asia/Shanghai'
+      WEBPASSWORD: 'pwd123456'
+    volumes:
+       - './etc-pihole/:/etc/pihole/'
+       - './etc-dnsmasq.d/:/etc/dnsmasq.d/'
+    dns:
+      - 127.0.0.1
+      - 114.114.114.114
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped
