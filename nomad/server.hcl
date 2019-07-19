@@ -211,6 +211,11 @@ server {
   #By default, this is - the top-level data_dir suffixed with "server", like "/opt/nomad/server". This must be an absolute path.
   data_dir = "[data_dir]/server"
 
+  ##server_join (server_join: nil)
+  #Specifies how the Nomad server will connect to other Nomad servers. 
+  #The retry_join fields may directly specify the server address or use go-discover syntax for auto-discovery. 
+  #See the server_join documentation for more detail.
+  
   ##enabled_schedulers (array<string>: [all])
   #Specifies which sub-schedulers this server will handle. 
   #This can be used to restrict the evaluations that worker threads will dequeue for processing.
@@ -288,11 +293,6 @@ server {
   #Specifies if Nomad will ignore a previous leave and attempt to rejoin the cluster when starting. 
   #By default, Nomad treats leave as a permanent intent and does not attempt to join the cluster again when starting. 
   #This flag allows the previous state to be used to rejoin the cluster.
-
-  ##server_join (server_join: nil)
-  #Specifies how the Nomad server will connect to other Nomad servers. 
-  #The retry_join fields may directly specify the server address or use go-discover syntax for auto-discovery. 
-  #See the server_join documentation for more detail.
 
   ##upgrade_version (string: "")
   #A custom version of the format X.Y.Z to use in place of the Nomad version when custom upgrades are enabled in Autopilot. 
