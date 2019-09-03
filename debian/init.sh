@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #自动或手动判断Linux发行版和版本号初始化系统，安装字体，安装常用工具和zsh等
 #正在修改中，修改的已经不能用了
-#Centos Debian Fedora Ubuntu ↑↓ OpenSUSE Gentoo Arch ↓↓ FreeBSD
+#Centos Debian Fedora Ubuntu ↑↓ OpenSUSE Gentoo Arch Alpine ↓↓ FreeBSD OpenBSD NetBSD
 #bash -c "$(wget https://raw.githubusercontent.com/crystalsis/someofmyconfig/master/debian/init.sh -O -)"
 #su - root
 if [ -n "$1" ]; then
@@ -49,11 +49,10 @@ else
   ver=$(lsb_release -rs | tr [:upper:] [:lower:])
   code=$(lsb_release -cs | tr [:upper:] [:lower:])
 fi
-printf "select os:${os},version:${ver}\n"
-
+printf "select os:%s,version:%s,dode:%s\n" "${os}" "${ver}" "${code}"
 case ${os} in
 debian)
-  case ${ver} in
+  case ${code} in
   buster)
     printf "0\n"
     ;;
@@ -71,7 +70,20 @@ debian)
 centos)
   printf "4\n"
   ;;
+fedora) ;;
+
+ubuntu) ;;
+
+opensuse) ;;
+
+gentoo) ;;
+
+arch) ;;
+
+alpine) ;;
+
 esac
+
 #context
 apt-get update
 apt-get install -y netselect-apt apt-transport-https
