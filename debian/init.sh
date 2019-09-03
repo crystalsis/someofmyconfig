@@ -1,19 +1,62 @@
 #!/usr/bin/env bash
-os="debian"
-ver="stretch"
-if [ -n "$1" ]; then
-  os="$1"
-fi
-if [ -n "$2" ]; then
-  ver="$2"
-fi
-printf "select os:${os},version:${ver}\n"
-#command
+#自动或手动判断Linux发行版和版本号初始化系统，安装字体，安装常用工具和zsh等
+#正在修改中，修改的已经不能用了
+#Centos Debian Fedora Ubuntu ↑↓ OpenSUSE Gentoo Arch ↓↓ FreeBSD
 #bash -c "$(wget https://raw.githubusercontent.com/crystalsis/someofmyconfig/master/debian/init.sh -O -)"
 #su - root
+if [ -n "$1" ]; then
+  os="$1"
+  if [ -n "$2" ]; then
+    ver="$2"
+    if [[ $os == "debian" ]]; then
+      case $ver in
+      4)
+        code="etch"
+        ;;
+      5)
+        code="lenny"
+        ;;
+      6)
+        code="squeeze"
+        ;;
+      7)
+        code="wheezy"
+        ;;
+      8)
+        code="jessie"
+        ;;
+      9)
+        code="stretch"
+        ;;
+      10)
+        code="buster"
+        ;;
+      esac
+    elif [[ $os == "centos" ]]; then
+      code="$ver"
+    else
+      code="$ver"
+    fi
+  else
+    command -v lsb_release || { dnf install -y redhat-lsb || yum install -y redhat-lsb || apt-get install -y lsb-release || zypper install -y lsb-release; }
+    os=$(lsb_release -is | tr [:upper:] [:lower:])
+    ver=$(lsb_release -rs | tr [:upper:] [:lower:])
+    code=$(lsb_release -cs | tr [:upper:] [:lower:])
+  fi
+else
+  command -v lsb_release || { dnf install -y redhat-lsb || yum install -y redhat-lsb || apt-get install -y lsb-release || zypper install -y lsb-release; }
+  os=$(lsb_release -is | tr [:upper:] [:lower:])
+  ver=$(lsb_release -rs | tr [:upper:] [:lower:])
+  code=$(lsb_release -cs | tr [:upper:] [:lower:])
+fi
+printf "select os:${os},version:${ver}\n"
+
 case ${os} in
 debian)
   case ${ver} in
+  buster)
+    printf "0\n"
+    ;;
   stretch)
     printf "1\n"
     ;;
@@ -32,16 +75,21 @@ esac
 #context
 apt-get update
 apt-get install -y netselect-apt apt-transport-https
-netselect-apt -s -n -c China -d -t 20 ${debian}
+netselect-apt -s -n -c China -d -t 20 ${ver}
+mv sources.list /etc/apt/sources.list
+apt-get update
+
 cat <<EOF >/etc/apt/sources.list
-deb https://mirrors.aliyun.com/debian/ ${debian} main non-free contrib
-deb-src https://mirrors.aliyun.com/debian/ ${debian} main non-free contrib
-deb https://mirrors.aliyun.com/debian-security ${debian}/updates main
-deb-src https://mirrors.aliyun.com/debian-security ${debian}/updates main
-deb https://mirrors.aliyun.com/debian/ ${debian}-updates main non-free contrib
-deb-src https://mirrors.aliyun.com/debian/ ${debian}-updates main non-free contrib
-deb https://mirrors.aliyun.com/debian/ ${debian}-backports main non-free contrib
-deb-src https://mirrors.aliyun.com/debian/ ${debian}-backports main non-free contrib
+deb https://mirrors.aliyun.com/debian/ stable main non-free contrib
+deb-src https://mirrors.aliyun.com/debian/ stable main non-free contrib
+deb https://mirrors.aliyun.com/debian/ stable-updates main non-free contrib
+deb-src https://mirrors.aliyun.com/debian/ stable-updates main non-free contrib
+deb https://mirrors.aliyun.com/debian/ stable-backports main non-free contrib
+deb-src https://mirrors.aliyun.com/debian/ stable-backports main non-free contrib
+deb https://mirrors.aliyun.com/debian/ stable-proposed-updates main non-free contrib
+deb-src https://mirrors.aliyun.com/debian/ stable-proposed-updates main non-free contrib
+deb https://mirrors.aliyun.com/debian-security/ stable/updates main non-free contrib
+deb-src https://mirrors.aliyun.com/debian-security/ stable/updates main non-free contrib
 EOF
 apt-get update
 apt-get upgrade
@@ -78,7 +126,7 @@ apt-get install -y docker-ce
 curl -fsSL "https://mirrors.aliyun.com/docker-toolbox/linux/compose/1.21.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 #k8s
-curl -fsSL https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | apt-key add - 
+curl -fsSL https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | apt-key add -
 cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
 deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main
 EOF
