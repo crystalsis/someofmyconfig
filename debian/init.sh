@@ -52,44 +52,78 @@ fi
 printf "select os:%s,version:%s,dode:%s\n" "${os}" "${ver}" "${code}"
 case ${os} in
 debian)
-  case ${code} in
-  buster)
+  #context
+  apt-get update
+  apt-get install -y netselect-apt apt-transport-https
+  netselect-apt -s -n -c China -d -t 20 ${ver}
+  mv sources.list /etc/apt/sources.list
+  apt-get update
+  case ${ver} in
+  10)
     printf "0\n"
+
     ;;
-  stretch)
+  9)
     printf "1\n"
     ;;
-  jessie)
+  8)
     printf "2\n"
     ;;
-  wheezy)
+  7)
     printf "3\n"
     ;;
   esac
   ;;
 centos)
-  printf "4\n"
+  case ${ver} in
+  1)
+    printf "4\n"
+    ;;
+  esac
   ;;
-fedora) ;;
-
-ubuntu) ;;
-
-opensuse) ;;
-
-gentoo) ;;
-
-arch) ;;
-
-alpine) ;;
-
+fedora)
+  case ${ver} in
+  1)
+    printf "4\n"
+    ;;
+  esac
+  ;;
+ubuntu)
+  case ${ver} in
+  1)
+    printf "4\n"
+    ;;
+  esac
+  ;;
+opensuse)
+  case ${ver} in
+  1)
+    printf "4\n"
+    ;;
+  esac
+  ;;
+gentoo)
+  case ${ver} in
+  1)
+    printf "4\n"
+    ;;
+  esac
+  ;;
+arch)
+  case ${ver} in
+  1)
+    printf "4\n"
+    ;;
+  esac
+  ;;
+alpine)
+  case ${ver} in
+  1)
+    printf "4\n"
+    ;;
+  esac
+  ;;
 esac
-
-#context
-apt-get update
-apt-get install -y netselect-apt apt-transport-https
-netselect-apt -s -n -c China -d -t 20 ${ver}
-mv sources.list /etc/apt/sources.list
-apt-get update
 
 cat <<EOF >/etc/apt/sources.list
 deb https://mirrors.aliyun.com/debian/ stable main non-free contrib

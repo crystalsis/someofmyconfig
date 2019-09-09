@@ -1,0 +1,197 @@
+version: '3.1'
+
+services:
+
+  mysql:
+    image: mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: pwd123456
+    volumes:
+      - E:/docker/mysql/conf:/etc/mysql/conf.d
+      - E:/docker/mysql/data:/var/lib/mysql
+
+  mariadb:
+    image: mariadb
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: always
+    ports:
+      - 3306:3307
+    environment:
+      MYSQL_ROOT_PASSWORD: pwd123456
+    volumes:
+      - E:/docker/mariadb/conf:/etc/mysql/conf.d
+      - E:/docker/mariadb/data:/var/lib/mysql
+
+  percona:
+    image: percona
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: always
+    ports:
+      - 3306:3308
+    environment:
+      MYSQL_ROOT_PASSWORD: pwd123456
+    volumes:
+      - E:/docker/percona/conf:/etc/mysql/conf.d
+      - E:/docker/percona/data:/var/lib/mysql
+
+  postgres:
+    image: postgres
+    command: -c 'config_file=/etc/postgresql/postgresql.conf'
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: pwd123456
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - E:/docker/postgres/data:/var/lib/postgresql/data
+      - E:/docker/postgres/conf/postgres.conf:/etc/postgresql/postgresql.conf
+
+  timescale:
+    image: timescale/timescaledb-postgis:latest-pg11
+    command: -c 'config_file=/etc/postgresql/postgresql.conf'
+    restart: always
+    ports:
+      - 5432:5433
+    environment:
+      POSTGRES_PASSWORD: pwd123456
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - E:/docker/timescale/data:/var/lib/postgresql/data
+      - E:/docker/timescale/conf/postgres.conf:/etc/postgresql/postgresql.conf
+  
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.1
+    restart: always
+    container_name: es01
+    environment:
+      - node.name=es01
+      - discovery.seed_hosts=es02
+      - cluster.initial_master_nodes=es01,es02
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - E:/docker/elasticsearch/conf/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - E:/docker/elasticsearch/data01:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      - esnet
+
+  es02:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.1
+    restart: always
+    container_name: es02
+    environment:
+      - node.name=es02
+      - discovery.seed_hosts=es01
+      - cluster.initial_master_nodes=es01,es02
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - E:/docker/elasticsearch/conf/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - E:/docker/elasticsearch/data02:/usr/share/elasticsearch/data
+    networks:
+      - esnet
+
+  redis:
+    image: redis
+    command: redis-server /usr/local/etc/redis/redis.conf --appendonly yes
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - E:/docker/redis/data:/data
+      - E:/docker/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
+
+  mongo:
+    image: mongo
+    command: --config /etc/mongo/mongod.conf
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: pwd123456
+    ports:
+      - 27017:27017
+    volumes:
+      - E:/docker/mongodb/conf:/etc/mongo
+      - E:/docker/mongodb/data:/data/db
+
+  cassandra:
+    image: cassandra
+    restart: always
+    ports:
+      - 7000:7000
+    volumes:
+      - E:/docker/cassandra/conf/cassandra.yaml:/etc/cassandra/cassandra.yaml
+      - E:/docker/cassandra/data:/var/lib/cassandra
+
+  neo4j:
+    image: neo4j
+    restart: always
+    environment:
+      NEO4J_AUTH: neo4j/pwd123456
+    ports:
+      - 7474:7474
+      - 7473:7473
+      - 7687:7687
+    volumes:
+      - E:/docker/neo4j/conf:/conf
+      - E:/docker/neo4j/data:/data
+      - E:/docker/neo4j/import:/import
+      - E:/docker/neo4j/logs:/logs
+      - E:/docker/neo4j/metrics:/metrics
+      - E:/docker/neo4j/plugins:/plugins
+      - E:/docker/neo4j/ssl:/ssl
+
+  solr:
+    image: solr
+    restart: always
+    environment:
+      SOLR_HOME: /var/solr/data
+    ports:
+      - 8983:8983
+    volumes:
+      - E:/docker/solr/data:/var/solr/data
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      ADMINER_PLUGINS: plugin designs tables-filter tinymce edit-calendar edit-foreign edit-textarea enum-option enum-types
+      ADMINER_DESIGN: haeckel
+      ADMINER_DEFAULT_SERVER: mysql
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_BASICAUTH_USERNAME: "root"
+      ME_CONFIG_BASICAUTH_PASSWORD: "pwd123456"
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: "true"
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: pwd123456
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_MONGODB_SERVER: "mongo"
+
+networks:
+  esnet:
